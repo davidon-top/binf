@@ -14,7 +14,7 @@ pub struct Flag {
 
 impl Flag {
     /// set a flag value
-    pub fn set_flag(&mut self, flag: u32, value: bool) {
+    pub fn set_flag(&mut self, flag: u128, value: bool) {
         if value {
             self.value |= 1 << flag;
         } else {
