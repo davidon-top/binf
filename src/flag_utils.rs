@@ -14,3 +14,13 @@ pub fn get_flags(flags: i32) -> Vec<i32> {
     }
     tvec
 }
+
+pub fn vec_to_flag(vec: Vec<bool>) -> u128 {
+    let mut flag = 0;
+    for (i, &val) in vec.iter().enumerate() {
+        if val {
+            flag |= 1 << i;
+        }
+    }
+    flag
+}

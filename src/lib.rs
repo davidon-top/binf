@@ -4,6 +4,8 @@ TODO documentation
 
 pub mod flag_utils;
 pub mod macros;
+#[cfg(test)]
+mod test;
 
 ///struct that holds data for a flag and useful functions
 pub struct Flag {
@@ -16,9 +18,7 @@ impl Flag {
         if value {
             self.value |= 1 << flag;
         } else {
-            if self.get_flag(flag) {
-                self.value -= 1 << flag;
-            }
+            self.value &= !(1 << flag);
         }
     }
 
@@ -31,7 +31,7 @@ impl Flag {
     pub fn get_all_flags(&self) -> Vec<bool> {
         let mut ret = vec![];
         for i in 0..128 {
-            ret.push(&self.value & (1u128 << i) != 0);
+            ret.push(&self.value & (1 << i) != 0);
         }
         for i in (0..ret.len()).rev() {
             if ret[i] {
@@ -42,6 +42,8 @@ impl Flag {
         ret
     }
 
+
+
     /// creates Flag from int
     pub fn new_from_value(value: u128) -> Self {
         Self {value}
@@ -50,6 +52,11 @@ impl Flag {
     /// returns flags value
     pub fn get(&self) -> u128 {
         self.value
+    }
+
+    /// sets internal value to this
+    pub fn set_value(&mut self, value: u128) {
+        self.value = value;
     }
 
     /// initializes a Flag with 0, use flag_new! macro to create with flags instead
