@@ -1,0 +1,18 @@
+[package]
+name = "binf_macros"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "A crate that adds utilities for dealing with binary flags"
+authors = ["DavidOnTop <me@davidon.top>"]
+readme = "../README.md"
+repository = "https://github.com/D0A1V2I3D/binf"
+documentation = "https://docs.rs/binf_macros/"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+proc-macro2 = "1.0.68"
+quote = "1.0.33"
+syn = { version = "2.0.38", features = ["full"] }
