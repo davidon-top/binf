@@ -10,4 +10,4 @@ repository = "https://github.com/D0A1V2I3D/binf"
 documentation = "https://docs.rs/binf/"
 
 [dependencies]
-binf_macros = { path = "macros" }
+binf_macros = { path = "macros", version = "0.1.0" }
