@@ -1,6 +1,6 @@
 [package]
 name = "binf"
-version = "1.0.0-rc1"
+version = "1.0.0"
 edition = "2021"
 license = "MIT"
 description = "A crate that adds utilities for dealing with binary flags"
@@ -10,4 +10,4 @@ repository = "https://github.com/D0A1V2I3D/binf"
 documentation = "https://docs.rs/binf/"
 
 [dependencies]
-binf_macros = { path = "macros", version = "0.1.0" }
+binf_macros = { path = "macros", version = "0.1.1" }

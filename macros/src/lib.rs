@@ -1,5 +1,25 @@
 use proc_macro::TokenStream;
 
+/// Attribute proc macro that turns a struct into a bitflag
+/// The underlying type of the bitflag is chosen based on the number of fields in the struct
+/// usage:
+/// ```rust
+/// #[bitflag]
+/// pub struct MyBitflag {
+///     a: bool,
+///     b: bool,
+///     c: bool,
+/// }
+///
+/// fn main() {
+///     let mut flag = MyBitflag::new(0);
+///     flag.set_a(true);
+///     let a = flag.a();
+/// }
+/// ```
+/// You should also be able to add derive macros on the struct because the macro copies all attributes to the new struct
+/// so you should be able to derive Serialize for example its just that in serialized data you will see the underlying type (unsigned number)
+/// you can also call functions from BitFlag trait beacause the new struct implements deref and deref_mut to the underlying type 
 #[proc_macro_attribute]
 pub fn bitflag(_attr: TokenStream, input: TokenStream) -> TokenStream {
     let structdef: syn::ItemStruct = syn::parse_macro_input!(input as syn::ItemStruct);
