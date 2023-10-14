@@ -49,8 +49,7 @@ pub fn bitflag(_attr: TokenStream, input: TokenStream) -> TokenStream {
         }
     };
 
-
-    let newstruct: syn::ItemStruct = syn::parse_quote! {
+    let newstruct = quote::quote! {
         #(#attrs)*
         #vis struct #structname {
             value: #u_type
