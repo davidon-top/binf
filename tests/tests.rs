@@ -1,5 +1,4 @@
 use binf::*;
-use binf_macros::*;
 
 #[bitflag]
 pub struct Test {
@@ -69,4 +68,17 @@ fn u64_test() {
     assert_eq!(flags.get_flag(7), true);
     flags.set_flag(0, true);
     assert_eq!(flags, 0b10101011);
+}
+
+#[test]
+fn off_test() {
+    let flags = Test::new(0b0);
+    assert_eq!(flags.a(), false);
+    assert_eq!(flags.b(), false);
+    assert_eq!(flags.c(), false);
+    assert_eq!(flags.d(), false);
+    assert_eq!(flags.e(), false);
+    assert_eq!(flags.f(), false);
+    assert_eq!(flags.g(), false);
+    assert_eq!(flags.h(), false);
 }

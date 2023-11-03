@@ -1,4 +1,5 @@
 use proc_macro::TokenStream;
+use proc_macro2_diagnostics::Diagnostic;
 
 /// Attribute proc macro that turns a struct into a bitflag
 /// The underlying type of the bitflag is chosen based on the number of fields in the struct
@@ -24,15 +25,16 @@ use proc_macro::TokenStream;
 /// you can also call functions from BitFlag trait beacause the new struct implements deref and deref_mut to the underlying type 
 #[proc_macro_attribute]
 pub fn bitflag(_attr: TokenStream, input: TokenStream) -> TokenStream {
+    let mut diagnostics = Vec::new();
+
     let structdef: syn::ItemStruct = syn::parse_macro_input!(input as syn::ItemStruct);
     // check if the struct has correct shape
-    if !check_struct(&structdef) {
-        panic!("struct has incorrect shape");
-    }
+    check_struct(&mut diagnostics, &structdef);
+
     let structname = structdef.ident;
     let structfields = match &structdef.fields {
         syn::Fields::Named(f) => f.named.iter().map(|f| f.ident.clone().unwrap()).collect::<Vec<_>>(),
-        _ => panic!("struct has incorrect shape"),
+        _ => {diagnostics.push(syn::Error::new_spanned(&structdef.fields, "struct has incorrect shape, only works on struct with named fields").into()); Vec::new()},
     };
 
     let vis = structdef.vis.clone();
@@ -47,7 +49,7 @@ pub fn bitflag(_attr: TokenStream, input: TokenStream) -> TokenStream {
             17..=32 => quote::quote! { u32 },
             33..=64 => quote::quote! { u64 },
             65..=128 => quote::quote! { u128 },
-            _ => panic!("struct has too many fields"),
+            _ => {diagnostics.push(syn::Error::new_spanned(structdef.fields, "struct has too many fields").into()); quote::quote! { u8 }}
         }
     };
 
@@ -107,7 +109,9 @@ pub fn bitflag(_attr: TokenStream, input: TokenStream) -> TokenStream {
         }
     };
 
+    let diagnostics = diagnostics.iter().map(|d| d.clone().emit_as_item_tokens());
     quote::quote! {
+        #(#diagnostics)*
         #newstruct
         #impls
         #deref_impl
@@ -116,28 +120,33 @@ pub fn bitflag(_attr: TokenStream, input: TokenStream) -> TokenStream {
 }
 
 /// returns true if the struct has a correct shape
-fn check_struct(input: &syn::ItemStruct) -> bool {
+fn check_struct(diagnostics: &mut Vec<Diagnostic>, input: &syn::ItemStruct) {
     if input.generics.lt_token.is_some() {
-        return false;
+        diagnostics.push(syn::Error::new_spanned(&input.generics, "generics not allowed in bitflag structs").into());
     }
     if input.generics.gt_token.is_some() {
-        return false;
+        diagnostics.push(syn::Error::new_spanned(&input.generics, "generics not allowed in bitflag structs").into());
     }
     if input.generics.where_clause.is_some() {
-        return false;
+        diagnostics.push(syn::Error::new_spanned(&input.generics, "generics not allowed in bitflag structs").into());
     }
     if !input.generics.params.is_empty() {
-        return false;
+        diagnostics.push(syn::Error::new_spanned(&input.generics, "generics not allowed in bitflag structs").into());
     }
 
     match &input.fields {
-        syn::Fields::Unnamed(_) => false,
-        syn::Fields::Unit => false,
+        syn::Fields::Unnamed(f) => diagnostics.push(syn::Error::new_spanned(f, "struct has incorrect shape, found tuple struct").into()),
+        syn::Fields::Unit => diagnostics.push(syn::Error::new_spanned(input, "struct has incorrect shape, found unit struct").into()),
         syn::Fields::Named(f) => {
             if f.named.len() > 128 {
-                return false;
+                diagnostics.push(syn::Error::new_spanned(f, "struct has too many fields").into());
             }
-            true
+            for field in f.named.iter() {
+                match &field.ty {
+                    syn::Type::Path(path_type) if path_type.path.is_ident("bool") => {},
+                    _ => diagnostics.push(syn::Error::new_spanned(field, "struct has incorrect shape, found non bool field").into()),
+                }
+            }
         },
     }
 }

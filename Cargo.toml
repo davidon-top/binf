@@ -15,4 +15,4 @@ members = [
 ]
 
 [dependencies]
-binf_macros = { version = "1.0.1" }
+binf_macros = { version = "1.0.1", path = "macros" }
