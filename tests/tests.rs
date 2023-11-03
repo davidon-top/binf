@@ -1,4 +1,5 @@
-use crate::*;
+use binf::*;
+use binf_macros::*;
 
 #[bitflag]
 pub struct Test {
@@ -14,7 +15,7 @@ pub struct Test {
 
 #[test]
 fn macro_test() {
-    let mut test = Test::new(0b10101010);
+    let test = Test::new(0b10101010);
     assert_eq!(test.a(), false);
     assert_eq!(test.b(), true);
     assert_eq!(test.c(), false);

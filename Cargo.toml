@@ -9,5 +9,10 @@ readme = "README.md"
 repository = "https://github.com/D0A1V2I3D/binf"
 documentation = "https://docs.rs/binf/"
 
+[workspace]
+members = [
+	"macros"
+]
+
 [dependencies]
-binf_macros = { path = "macros", version = "1.0.1" }
+binf_macros = { version = "1.0.1" }

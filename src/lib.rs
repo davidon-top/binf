@@ -4,8 +4,6 @@ This crate aims to make working with binary/bit flags easier. It also provides a
 */
 
 pub use binf_macros::*;
-#[cfg(test)]
-mod tests;
 
 /// A trait for types that can be used as bit flags.
 pub trait BitFlag {

@@ -3,7 +3,9 @@ use proc_macro::TokenStream;
 /// Attribute proc macro that turns a struct into a bitflag
 /// The underlying type of the bitflag is chosen based on the number of fields in the struct
 /// usage:
-/// ```rust
+/// ```ignore
+/// use binf::bitflag;
+///
 /// #[bitflag]
 /// pub struct MyBitflag {
 ///     a: bool,
