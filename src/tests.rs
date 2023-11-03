@@ -69,3 +69,8 @@ fn u64_test() {
     flags.set_flag(0, true);
     assert_eq!(flags, 0b10101011);
 }
+
+#[test]
+fn ci_tmp_test() {
+    assert!(false);
+}
