@@ -1,12 +1,12 @@
 [package]
 name = "binf_macros"
-version = "1.1.0"
+version = "1.1.1"
 edition = "2021"
 license = "MIT"
 description = "A crate that adds utilities for dealing with binary flags"
 authors = ["DavidOnTop <me@davidon.top>"]
 readme = "../README.md"
-repository = "https://github.com/D0A1V2I3D/binf"
+repository = "https://git.srht.davidon.top/~davidontop/binf"
 documentation = "https://docs.rs/binf_macros/"
 
 [lib]
