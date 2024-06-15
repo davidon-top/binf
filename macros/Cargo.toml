@@ -6,7 +6,7 @@ license = "MIT"
 description = "A crate that adds utilities for dealing with binary flags"
 authors = ["DavidOnTop <me@davidon.top>"]
 readme = "../README.md"
-repository = "https://git.srht.davidon.top/~davidontop/binf"
+repository = "https://git.davidon.top/public/binf.git"
 documentation = "https://docs.rs/binf_macros/"
 
 [lib]

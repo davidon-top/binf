@@ -6,13 +6,11 @@ license = "MIT"
 description = "A crate that adds utilities for dealing with binary flags"
 authors = ["DavidOnTop <me@davidon.top>"]
 readme = "README.md"
-repository = "https://git.davidon.top/binf.git"
+repository = "https://git.davidon.top/public/binf.git"
 documentation = "https://docs.rs/binf"
 
 [workspace]
-members = [
-	"macros"
-]
+members = ["macros"]
 
 [dependencies]
 binf_macros = { version = "1.1.1", path = "macros" }
