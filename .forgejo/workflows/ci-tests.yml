@@ -1,0 +1,42 @@
+name: checks
+
+on:
+  push:
+    branches:
+      - "main"
+      - "feat/*"
+  pull_request:
+  pull_request_target:
+
+env:
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: full
+
+jobs:
+  test:
+    runs-on: self-hosted
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests
+        run: cargo test --verbose --all-features --workspace --tests --bins --lib
+      - name: Run doctests
+        run: cargo test --verbose --all-features --workspace --doc
+
+  clippy:
+    runs-on: self-hosted
+    timeout-minutes: 10
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Run clippy
+        run: cargo clippy -- -D warnings
+
+  format:
+    runs-on: self-hosted
+    timeout-minutes: 10
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Run cargo fmt
+        run: cargo fmt --all -- --check
